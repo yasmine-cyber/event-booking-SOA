@@ -22,7 +22,7 @@ function Navigation({ currentPage, onNavigate }) {
 
   const handleNavigate = (itemId) => {
     if (itemId === "auth") {
-      onNavigate("login");
+      onNavigate("auth");
     } else {
       onNavigate(itemId);
     }

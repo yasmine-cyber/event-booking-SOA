@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/evenements")
-@CrossOrigin(origins = "*")
+@CrossOrigin // global CORS config handles origins/credentials
 public class EvenementRestController {
 
     @Autowired

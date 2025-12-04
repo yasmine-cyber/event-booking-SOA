@@ -1,5 +1,7 @@
 package tn.iset.sousse.eventbooking.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -21,6 +23,8 @@ public abstract class Utilisateur {
 	@Column(nullable = false, unique = true)
 	private String email;
 
+	// Accept password in requests but never expose it in responses
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(nullable = false)
 	private String motDePasse;
 
@@ -78,5 +82,20 @@ public abstract class Utilisateur {
 
 	public void setDateInscription(LocalDateTime dateInscription) {
 		this.dateInscription = dateInscription;
+	}
+
+	/**
+	 * Derived property exposed to the frontend so it can distinguish
+	 * between participants and organizers without relying on JPA details.
+	 */
+	@JsonProperty("userType")
+	public String getUserType() {
+		if (this instanceof Organisateur) {
+			return "organisateur";
+		}
+		if (this instanceof Participant) {
+			return "participant";
+		}
+		return "utilisateur";
 	}
 }

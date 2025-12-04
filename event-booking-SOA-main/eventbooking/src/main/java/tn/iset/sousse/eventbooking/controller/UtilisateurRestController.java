@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/utilisateurs")
-@CrossOrigin(origins = "*") // Permet l'accès depuis n'importe quelle origine
+@CrossOrigin // global CORS config handles origins/credentials
 public class UtilisateurRestController {
 
     @Autowired

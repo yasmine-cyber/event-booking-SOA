@@ -6,6 +6,7 @@ tn\iset\sousse\eventbooking\entity\Admin.class
 tn\iset\sousse\eventbooking\controller\UtilisateurRestController$LoginRequest.class
 tn\iset\sousse\eventbooking\service\EvenementService.class
 tn\iset\sousse\eventbooking\repository\ReservationRepository.class
+tn\iset\sousse\eventbooking\config\CorsConfig.class
 tn\iset\sousse\eventbooking\controller\FactController.class
 tn\iset\sousse\eventbooking\repository\UtilisateurRepository.class
 tn\iset\sousse\eventbooking\controller\EvenementRestController.class
