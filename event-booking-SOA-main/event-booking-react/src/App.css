@@ -1,0 +1,69 @@
+@import "./styles/Global.css";
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--light-bg);
+}
+
+.main-content {
+  flex: 1;
+  background-color: var(--light-bg);
+}
+
+.loading-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--light-bg);
+  gap: 1rem;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--border-color);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-app p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.unauthorized {
+  max-width: 1200px;
+  margin: 4rem auto;
+  padding: 2rem;
+  text-align: center;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
+}
+
+.unauthorized p {
+  font-size: 1.1rem;
+  color: var(--warning-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .App {
+    font-size: 14px;
+  }
+
+  .main-content {
+    padding: 0;
+  }
+}

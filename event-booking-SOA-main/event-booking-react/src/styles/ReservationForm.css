@@ -1,0 +1,74 @@
+/* Reservation Form Styles */
+.reservation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.reservation-summary {
+  padding: 1.5rem;
+  background-color: var(--light-bg);
+  border-radius: 0.5rem;
+  border-left: 4px solid var(--primary-color);
+}
+
+.reservation-summary h3 {
+  margin: 0 0 1rem 0;
+  color: var(--text-primary);
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+}
+
+.summary-item span {
+  color: var(--text-secondary);
+}
+
+.summary-item strong {
+  color: var(--text-primary);
+}
+
+.reservation-user-info {
+  padding: 1rem;
+  background-color: var(--light-bg);
+  border-radius: 0.5rem;
+}
+
+.reservation-user-info h4 {
+  margin: 0 0 0.75rem 0;
+  color: var(--text-primary);
+}
+
+.reservation-user-info p {
+  margin: 0.5rem 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.auth-required {
+  text-align: center;
+  padding: 2rem;
+}
+
+.auth-required p {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .reservation-form {
+    gap: 1rem;
+  }
+
+  .reservation-summary {
+    padding: 1rem;
+  }
+}
