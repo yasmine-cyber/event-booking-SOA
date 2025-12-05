@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import tn.iset.sousse.eventbooking.service.CountryService;
 import tn.iset.sousse.eventbooking.service.WeatherService;
 
-
 import java.util.List;
 import java.util.Map;
 
@@ -35,4 +34,15 @@ public class ExternalServicesController {
         return ResponseEntity.ok(countryService.getCountryInfo(countryName));
     }
 
+    @GetMapping("/test-country/{countryName}")
+    public ResponseEntity<Map<String, Object>> testCountry(@PathVariable String countryName) {
+        System.out.println("TEST Country endpoint called for: " + countryName);
+        List<Map<String, Object>> countryInfo = countryService.getCountryInfo(countryName);
+
+        if (countryInfo != null && !countryInfo.isEmpty()) {
+            return ResponseEntity.ok(countryInfo.get(0));
+        } else {
+            return ResponseEntity.ok(Map.of("error", "No country found"));
+        }
+    }
 }
