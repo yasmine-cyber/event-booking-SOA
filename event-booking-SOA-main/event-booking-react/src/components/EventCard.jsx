@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../context/AuthContext"; // IMPORTANT: Ajouter cette ligne
 import { getWeather } from "../api/apiContext";
 import "../styles/EventCard.css";
 
 function EventCard({ event, onViewDetails, onEdit, onDelete, onReserve, showActions = true }) {
+  const { user } = useContext(AuthContext); // IMPORTANT: Ajouter cette ligne
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -30,6 +32,11 @@ function EventCard({ event, onViewDetails, onEdit, onDelete, onReserve, showActi
     if (event.placesDisponibles <= 5) return "#f39c12";
     return "#27ae60";
   };
+
+  // Vérifier si l'utilisateur est un organisateur
+  const isOrganizer = user && user.userType === "organisateur";
+  // Vérifier si le bouton de réservation doit être désactivé
+  const isReserveDisabled = isOrganizer || event.placesDisponibles === 0;
 
   return (
     <div className={`event-card ${!event.actif ? "inactive" : ""}`}>
@@ -59,7 +66,7 @@ function EventCard({ event, onViewDetails, onEdit, onDelete, onReserve, showActi
               <span className="icon">
                 {weather.weather && weather.weather[0] ? (
                   <img
-                    src={`http://openweathermap.org/img/w/${weather.weather[0].icon}.png`}
+                    src={`https://openweathermap.org/img/w/${weather.weather[0].icon}.png`}
                     alt="Weather"
                     style={{ width: "20px", height: "20px" }}
                   />
@@ -104,9 +111,10 @@ function EventCard({ event, onViewDetails, onEdit, onDelete, onReserve, showActi
               <button
                 className="btn btn-success"
                 onClick={() => onReserve(event)}
-                disabled={event.placesDisponibles === 0}
+                disabled={isReserveDisabled}
+                title={isOrganizer ? "Organizers cannot make reservations" : event.placesDisponibles === 0 ? "No places available" : ""}
               >
-                Reserve Now
+                {isOrganizer ? "Reserve (Disabled)" : "Reserve Now"}
               </button>
             )}
             {onEdit && (

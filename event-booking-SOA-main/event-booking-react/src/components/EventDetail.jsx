@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { getEventById, getWeather, getCountryInfo, getFact } from "../api/apiContext";
 import LoadingSpinner from "./LoadingSpinner";
 import "../styles/EventDetail.css";
 
 function EventDetail({ eventId, onClose, onReserve }) {
+  const { user } = useContext(AuthContext);
   const [event, setEvent] = useState(null);
   const [weather, setWeather] = useState(null);
   const [country, setCountry] = useState(null);
   const [fact, setFact] = useState(null);
   const [loading, setLoading] = useState(true);
   const [countryLoading, setCountryLoading] = useState(false);
+
+  // Vérifier si l'utilisateur est un organisateur
+  const isOrganizer = user && user.userType === "organisateur";
 
   useEffect(() => {
     loadEvent();
@@ -176,6 +181,7 @@ function EventDetail({ eventId, onClose, onReserve }) {
       });
   };
 
+  // DÉPLACER LA VÉRIFICATION ICI, AVANT LES FONCTIONS QUI UTILISENT event
   if (loading) return <LoadingSpinner />;
   if (!event) return <div className="event-detail-error">Event not found</div>;
 
@@ -200,6 +206,7 @@ function EventDetail({ eventId, onClose, onReserve }) {
       .join(", ");
   };
 
+  // AJOUTER CETTE VÉRIFICATION ICI - event est maintenant garanti d'être non-null
   return (
     <div className="event-detail-modal">
       <div className="event-detail-content">
@@ -368,8 +375,10 @@ function EventDetail({ eventId, onClose, onReserve }) {
                 onReserve(event);
                 onClose();
               }}
+              disabled={isOrganizer}
+              title={isOrganizer ? "Organizers cannot make reservations" : "Reserve your spot"}
             >
-              Reserve Now
+              {isOrganizer ? "Reserve (Organizer)" : "Reserve Now"}
             </button>
           )}
         </div>

@@ -11,7 +11,12 @@ function Navigation({ currentPage, onNavigate }) {
   ];
 
   if (user) {
-    menuItems.push({ id: "my-reservations", label: "My Reservations", icon: "🎟️" });
+    // Afficher "My Reservations" SEULEMENT pour les participants
+    if (user.userType === "participant") {
+      menuItems.push({ id: "my-reservations", label: "My Reservations", icon: "🎟️" });
+    }
+
+    // Options pour les organisateurs
     if (user.userType === "organisateur") {
       menuItems.push({ id: "create-event", label: "Create Event", icon: "➕" });
       menuItems.push({ id: "manage-events", label: "Manage Events", icon: "⚙️" });
