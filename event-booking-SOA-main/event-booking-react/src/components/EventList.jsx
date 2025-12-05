@@ -39,7 +39,7 @@ function EventList({ refresh, onSelectEvent, onReserve }) {
         filtered = events.filter((e) =>
           e.titre.toLowerCase().includes(query.toLowerCase())
         );
-      } else if (type === "location") {
+      } else if (type === "location" || type === "country") {
         filtered = events.filter((e) =>
           e.lieu.toLowerCase().includes(query.toLowerCase())
         );

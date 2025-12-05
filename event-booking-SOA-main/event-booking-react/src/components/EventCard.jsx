@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { getWeather } from "../api/apiContext";
 import "../styles/EventCard.css";
 
 function EventCard({ event, onViewDetails, onEdit, onDelete, onReserve, showActions = true }) {
@@ -13,6 +14,16 @@ function EventCard({ event, onViewDetails, onEdit, onDelete, onReserve, showActi
       minute: "2-digit",
     });
   };
+
+  const [weather, setWeather] = useState(null);
+
+  useEffect(() => {
+    if (event.lieu) {
+      getWeather(event.lieu)
+        .then((res) => setWeather(res.data))
+        .catch((err) => console.error("Error fetching weather:", err));
+    }
+  }, [event.lieu]);
 
   const getAvailabilityColor = () => {
     if (event.placesDisponibles === 0) return "#e74c3c";
@@ -43,6 +54,22 @@ function EventCard({ event, onViewDetails, onEdit, onDelete, onReserve, showActi
             <span className="icon">📍</span>
             <span className="text">{event.lieu}</span>
           </div>
+          {weather && weather.main && (
+            <div className="detail-item">
+              <span className="icon">
+                {weather.weather && weather.weather[0] ? (
+                  <img
+                    src={`http://openweathermap.org/img/w/${weather.weather[0].icon}.png`}
+                    alt="Weather"
+                    style={{ width: "20px", height: "20px" }}
+                  />
+                ) : (
+                  "🌤️"
+                )}
+              </span>
+              <span className="text">{Math.round(weather.main.temp)}°C</span>
+            </div>
+          )}
           <div className="detail-item">
             <span className="icon">👥</span>
             <span

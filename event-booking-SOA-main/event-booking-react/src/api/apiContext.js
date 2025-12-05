@@ -52,6 +52,10 @@ export const deleteUser = (id) => api.delete(`/api/utilisateurs/${id}`);
 // ============= FACT ENDPOINT =============
 export const getFact = () => api.get("/api/fact");
 
+// ============= EXTERNAL SERVICES ENDPOINTS =============
+export const getWeather = (city) => api.get(`/api/external/weather/${city}`);
+export const getCountryInfo = (countryName) => api.get(`/api/external/country/${countryName}`);
+
 // ============= ERROR HANDLING =============
 export const handleApiError = (error) => {
   if (error.response) {

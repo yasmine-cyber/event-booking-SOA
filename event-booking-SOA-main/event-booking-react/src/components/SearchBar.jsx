@@ -34,6 +34,7 @@ function SearchBar({ onSearch }) {
         >
           <option value="title">By Title</option>
           <option value="location">By Location</option>
+          <option value="country">By Country</option>
         </select>
       </div>
     </div>

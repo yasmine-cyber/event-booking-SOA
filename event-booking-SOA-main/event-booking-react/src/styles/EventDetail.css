@@ -182,3 +182,90 @@
     font-size: 1.5rem;
   }
 }
+
+/* Services Section */
+.services-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+}
+
+.services-section h3 {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.service-card {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  transition: transform 0.2s;
+}
+
+.service-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.service-icon {
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.service-icon img {
+  width: 30px;
+  height: 30px;
+}
+
+.service-info h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  color: #34495e;
+}
+
+.service-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.service-info .main-info {
+  font-weight: 500;
+  color: #2c3e50;
+  margin-bottom: 0.25rem;
+}
+
+.service-info .sub-info {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  margin-bottom: 0.2rem;
+}
+
+.fact-text {
+  font-style: italic;
+  font-size: 0.85rem !important;
+  color: #555 !important;
+}
+
+/* Service Types */
+.service-card.weather { border-left: 4px solid #3498db; }
+.service-card.country { border-left: 4px solid #2ecc71; }
+.service-card.fact { border-left: 4px solid #9b59b6; }
+.service-card.error { border-left: 4px solid #e74c3c; opacity: 0.7; }
