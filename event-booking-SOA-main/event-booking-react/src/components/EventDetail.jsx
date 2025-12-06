@@ -144,13 +144,28 @@ function EventDetail({ eventId, onClose, onReserve }) {
         if (countryRes.data && countryRes.data.length > 0) {
           // Handle both v3.1 and v2 API formats
           const countryData = countryRes.data[0];
+
+          // Handle different currency formats
+          let currenciesObj = {};
+          if (countryData.currencies) {
+            currenciesObj = countryData.currencies;
+          } else if (countryData.currency) {
+            // Handle simple string currency like "Euro"
+            currenciesObj = {
+              main: {
+                name: countryData.currency,
+                symbol: null
+              }
+            };
+          }
+
           setCountry({
             name: countryData.name?.common || countryData.name || countryName,
             capital: Array.isArray(countryData.capital) ? countryData.capital[0] : countryData.capital,
             population: countryData.population || 0,
             region: countryData.region || "Unknown",
             flag: countryData.flags?.png || countryData.flag || null,
-            currencies: countryData.currencies || {}
+            currencies: currenciesObj
           });
         } else {
           // No country found
@@ -202,7 +217,12 @@ function EventDetail({ eventId, onClose, onReserve }) {
     if (!currencies || Object.keys(currencies).length === 0) return "N/A";
 
     return Object.values(currencies)
-      .map(c => `${c.name} (${c.symbol || "N/A"})`)
+      .map(c => {
+        if (c.symbol && c.symbol !== "N/A") {
+          return `${c.name} (${c.symbol})`;
+        }
+        return c.name;
+      })
       .join(", ");
   };
 

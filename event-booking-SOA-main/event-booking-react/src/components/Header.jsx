@@ -9,7 +9,7 @@ function Header({ onAuthClick }) {
     <header className="header">
       <div className="header-container">
         <div className="header-left">
-          <h1 className="logo">🎉 EventHub</h1>
+          <h1 className="logo">🗓️ EventHub</h1>
           <p className="tagline">Manage Your Events Like Never Before</p>
         </div>
         <div className="header-right">

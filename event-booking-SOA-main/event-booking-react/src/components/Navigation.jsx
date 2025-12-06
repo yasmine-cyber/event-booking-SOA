@@ -7,7 +7,7 @@ function Navigation({ currentPage, onNavigate }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   let menuItems = [
-    { id: "events", label: "Browse Events", icon: "📅" },
+    { id: "events", label: "Browse Events", icon: "🌐" },
   ];
 
   if (user) {

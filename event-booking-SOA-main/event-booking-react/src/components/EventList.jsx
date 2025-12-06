@@ -83,7 +83,7 @@ function EventList({ refresh, onSelectEvent, onReserve }) {
 
       <div className="event-list-controls">
         <div className="sort-controls">
-          <label>Sort by:</label>
+          <label>Sort:</label>
           <select value={sortBy} onChange={(e) => handleSort(e.target.value)}>
             <option value="date">Date</option>
             <option value="title">Title</option>
@@ -108,7 +108,7 @@ function EventList({ refresh, onSelectEvent, onReserve }) {
           ))
         ) : (
           <div className="no-events">
-            <p>📭 No events found. Try adjusting your search criteria.</p>
+            <p>📭 No events found. Try adjusting your search criteria or creating an event.</p>
           </div>
         )}
       </div>

@@ -3,8 +3,9 @@ import { AuthContext } from "../context/AuthContext"; // IMPORTANT: Ajouter cett
 import { getWeather } from "../api/apiContext";
 import "../styles/EventCard.css";
 
-function EventCard({ event, onViewDetails, onEdit, onDelete, onReserve, showActions = true }) {
+function EventCard({ event, onViewDetails, onEdit, onDelete, onReserve, customActions, showActions = true }) {
   const { user } = useContext(AuthContext); // IMPORTANT: Ajouter cette ligne
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -133,6 +134,7 @@ function EventCard({ event, onViewDetails, onEdit, onDelete, onReserve, showActi
                 Delete
               </button>
             )}
+            {customActions}
           </div>
         )}
       </div>

@@ -1,20 +1,20 @@
 import React, { useState, useContext } from "react";
-import { createEvent } from "../api/apiContext";
+import { createEvent, updateEvent } from "../api/apiContext";
 import { AuthContext } from "../context/AuthContext";
 import Modal from "./Modal";
 import Toast from "./Toast";
 import "../styles/CreateEvent.css";
 
-function CreateEvent({ onEventCreated, onClose }) {
+function CreateEvent({ onEventCreated, onClose, existingEvent }) {
   const { user } = useContext(AuthContext);
   const [toast, setToast] = useState(null);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    titre: "",
-    description: "",
-    date: "",
-    lieu: "",
-    placesDisponibles: 10,
+    titre: existingEvent?.titre || "",
+    description: existingEvent?.description || "",
+    date: existingEvent?.date || "",
+    lieu: existingEvent?.lieu || "",
+    placesDisponibles: existingEvent?.placesDisponibles || 10,
   });
 
   const handleInputChange = (e) => {
@@ -38,33 +38,49 @@ function CreateEvent({ onEventCreated, onClose }) {
       // Add organizer if user is an organizer
       const eventData = {
         ...formData,
-        actif: true,
+        actif: existingEvent ? existingEvent.actif : true,
         organisateur: user?.userType === "organisateur" ? { id: user.id } : null,
       };
 
-      await createEvent(eventData);
-      setToast({ type: "success", message: "Event created successfully!" });
-      setFormData({
-        titre: "",
-        description: "",
-        date: "",
-        lieu: "",
-        placesDisponibles: 10,
-      });
+      if (existingEvent) {
+        await updateEvent(existingEvent.id, eventData);
+        setToast({ type: "success", message: "Event updated successfully!" });
+      } else {
+        await createEvent(eventData);
+        setToast({ type: "success", message: "Event created successfully!" });
+        // Only reset form on create, on edit we might want to keep it or just close
+        setFormData({
+          titre: "",
+          description: "",
+          date: "",
+          lieu: "",
+          placesDisponibles: 10,
+        });
+      }
+
       setTimeout(() => {
         onEventCreated();
         onClose();
       }, 1500);
     } catch (err) {
-      setToast({ type: "error", message: "Failed to create event. Please try again." });
+      setToast({ type: "error", message: `Failed to ${existingEvent ? 'update' : 'create'} event. Please try again.` });
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
+  // Calculate minimum date (current local date/time) for validation
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const minDate = `${year}-${month}-${day}T${hours}:${minutes}`;
+
   return (
-    <Modal isOpen={true} onClose={onClose} title="Create New Event">
+    <Modal isOpen={true} onClose={onClose} title={existingEvent ? "Edit Event" : "Create New Event"}>
       <form onSubmit={handleSubmit} className="create-event-form">
         <div className="form-group">
           <label htmlFor="titre">Event Title *</label>
@@ -100,6 +116,7 @@ function CreateEvent({ onEventCreated, onClose }) {
               name="date"
               value={formData.date}
               onChange={handleInputChange}
+              min={minDate}
               required
             />
           </div>
@@ -136,7 +153,7 @@ function CreateEvent({ onEventCreated, onClose }) {
             Cancel
           </button>
           <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? "Creating..." : "Create Event"}
+            {loading ? (existingEvent ? "Updating..." : "Creating...") : (existingEvent ? "Update Event" : "Create Event")}
           </button>
         </div>
       </form>

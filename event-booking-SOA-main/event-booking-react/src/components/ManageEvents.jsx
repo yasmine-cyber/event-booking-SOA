@@ -3,6 +3,7 @@ import { getEvents, deleteEvent, updateEvent, deactivateEvent, activateEvent } f
 import { AuthContext } from "../context/AuthContext";
 import EventCard from "./EventCard";
 import CreateEvent from "./CreateEvent";
+import EventDetail from "./EventDetail";
 import Toast from "./Toast";
 import LoadingSpinner from "./LoadingSpinner";
 import "../styles/ManageEvents.css";
@@ -12,6 +13,8 @@ function ManageEvents() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [editingEvent, setEditingEvent] = useState(null);
+  const [viewingEventId, setViewingEventId] = useState(null);
   const [toast, setToast] = useState(null);
   const [filterType, setFilterType] = useState("all");
 
@@ -91,7 +94,10 @@ function ManageEvents() {
         </div>
         <button
           className="btn btn-primary btn-lg"
-          onClick={() => setShowCreateModal(true)}
+          onClick={() => {
+            setEditingEvent(null);
+            setShowCreateModal(true);
+          }}
         >
           + Create New Event
         </button>
@@ -125,7 +131,10 @@ function ManageEvents() {
           <p>📭 No events found.</p>
           <button
             className="btn btn-primary"
-            onClick={() => setShowCreateModal(true)}
+            onClick={() => {
+              setEditingEvent(null);
+              setShowCreateModal(true);
+            }}
           >
             Create your first event
           </button>
@@ -136,23 +145,22 @@ function ManageEvents() {
             <div key={event.id} className="event-management-card">
               <EventCard
                 event={event}
-                onViewDetails={() => {}}
-                showActions={false}
+                onViewDetails={(id) => setViewingEventId(id)}
+                showActions={true}
+                onEdit={() => {
+                  setEditingEvent(event);
+                  setShowCreateModal(true);
+                }}
+                onDelete={() => handleDeleteEvent(event.id)}
+                customActions={
+                  <button
+                    className={`btn ${event.actif ? "btn-warning" : "btn-success"}`}
+                    onClick={() => handleToggleActive(event)}
+                  >
+                    {event.actif ? "Deactivate" : "Activate"}
+                  </button>
+                }
               />
-              <div className="management-actions">
-                <button
-                  className={`btn ${event.actif ? "btn-warning" : "btn-success"}`}
-                  onClick={() => handleToggleActive(event)}
-                >
-                  {event.actif ? "Deactivate" : "Activate"}
-                </button>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => handleDeleteEvent(event.id)}
-                >
-                  Delete
-                </button>
-              </div>
             </div>
           ))}
         </div>
@@ -161,7 +169,19 @@ function ManageEvents() {
       {showCreateModal && (
         <CreateEvent
           onEventCreated={loadEvents}
-          onClose={() => setShowCreateModal(false)}
+          onClose={() => {
+            setShowCreateModal(false);
+            setEditingEvent(null);
+          }}
+          existingEvent={editingEvent}
+        />
+      )}
+
+      {viewingEventId && (
+        <EventDetail
+          eventId={viewingEventId}
+          onClose={() => setViewingEventId(null)}
+          onReserve={() => { }} // Organizers can't reserve their own events anyway
         />
       )}
 
